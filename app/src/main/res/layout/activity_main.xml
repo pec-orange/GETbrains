@@ -3,14 +3,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="shenancalhar.getbrains.MainActivity">
+    tools:context="shenancalhar.getbrains.MainActivity"
+    android:background="@color/colorPrimary">
+
+    <ToggleButton
+        android:id="@+id/toggleButtonUp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="@drawable/togglebuttonup"
+        android:textOn="Forward"
+        android:textOff="Forward"
+        android:textSize="15sp"
+        android:textColor="@color/colorPrimaryText"
+        android:textAlignment="center"
+        android:onClick="toggleButtonLED_Click"
+        android:layout_marginTop="28dp"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/toggleButtonRight" />
+
+    <ToggleButton
+        android:id="@+id/toggleButtonLeft"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="@drawable/togglebuttonleft"
+        android:textOn="Left"
+        android:textOff="Left"
+        android:textSize="15sp"
+        android:textColor="@color/colorPrimaryText"
+        android:textAlignment="center"
+        android:onClick="toggleButtonLED_Click"
+        android:layout_below="@+id/toggleButtonUp"
+        android:layout_toStartOf="@+id/toggleButtonDown" />
+
+    <ToggleButton
+        android:id="@+id/toggleButtonDown"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="@drawable/togglebuttondown"
+        android:textOn="Backward"
+        android:textOff="Backward"
+        android:textSize="15sp"
+        android:textColor="@color/colorPrimaryText"
+        android:textAlignment="center"
+        android:onClick="toggleButtonLED_Click"
+        android:layout_below="@+id/toggleButtonLeft"
+        android:layout_centerHorizontal="true" />
+
+    <ToggleButton
+        android:id="@+id/toggleButtonRight"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="@drawable/togglebuttonright"
+        android:textOn="Right"
+        android:textOff="Right"
+        android:textSize="15sp"
+        android:textColor="@color/colorPrimaryText"
+        android:textAlignment="center"
+        android:onClick="toggleButtonLED_Click"
+        android:layout_above="@+id/toggleButtonDown"
+        android:layout_toEndOf="@+id/toggleButtonDown" />
 
     <TextView
+        android:id="@+id/textViewConsole"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello Worlded!" />
+        android:textSize="15sp"
+        android:text="Lorem ipsum"
+        android:textColor="@color/colorPrimaryText"
+        android:layout_below="@+id/toggleButtonDown"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp" />
 </RelativeLayout>
