@@ -31,7 +31,6 @@
         android:textSize="15sp"
         android:textColor="@color/colorPrimaryText"
         android:textAlignment="center"
-        android:onClick="toggleButtonLED_Click"
         android:layout_below="@+id/toggleButtonUp"
         android:layout_toStartOf="@+id/toggleButtonDown" />
 
@@ -45,7 +44,6 @@
         android:textSize="15sp"
         android:textColor="@color/colorPrimaryText"
         android:textAlignment="center"
-        android:onClick="toggleButtonLED_Click"
         android:layout_below="@+id/toggleButtonLeft"
         android:layout_centerHorizontal="true" />
 
@@ -59,7 +57,6 @@
         android:textSize="15sp"
         android:textColor="@color/colorPrimaryText"
         android:textAlignment="center"
-        android:onClick="toggleButtonLED_Click"
         android:layout_above="@+id/toggleButtonDown"
         android:layout_toEndOf="@+id/toggleButtonDown" />
 
