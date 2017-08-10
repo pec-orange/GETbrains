@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements  Runnable {
 
     private static final String ACTION_USB_PERMISSION = "com.google.android.DemoKit.action.USB_PERMISSION";
     private static final byte PACKET_MARKER = 0x18;
+    private static final byte ROTATION_COMMAND = 0x24;
 
     // These are used to establish android - arduino communication channel
     UsbAccessory mAccessory;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements  Runnable {
     ParcelFileDescriptor mFileDescriptor;
     boolean mPermissionRequestPending;
     PendingIntent mPermissionIntent;
+    dataTransferThread arduinoOutThread;
 
 
     @Override
@@ -55,6 +57,13 @@ public class MainActivity extends AppCompatActivity implements  Runnable {
             mAccessory = (UsbAccessory) getLastNonConfigurationInstance();
             openAccessory(mAccessory);
         }
+
+//        arduinoOutThread = new dataTransferThread(mOutputStream,
+//                (ToggleButton)findViewById(R.id.toggleButtonUp),
+//                (ToggleButton)findViewById(R.id.toggleButtonLeft),
+//                (ToggleButton)findViewById(R.id.toggleButtonDown),
+//                (ToggleButton)findViewById(R.id.toggleButtonRight));
+//        arduinoOutThread.start();
     }
 
 //    @Override
@@ -131,6 +140,8 @@ public class MainActivity extends AppCompatActivity implements  Runnable {
                 i += 1; // number of bytes sent from arduino
             }
 
+
+
         }
     }
 
@@ -179,6 +190,13 @@ public class MainActivity extends AppCompatActivity implements  Runnable {
             Thread thread = new Thread(null, this, "OpenAccessoryTest");
             thread.start();
             System.out.println("Accessory opened!");
+
+            arduinoOutThread = new dataTransferThread(mOutputStream,
+                    (ToggleButton)findViewById(R.id.toggleButtonUp),
+                    (ToggleButton)findViewById(R.id.toggleButtonLeft),
+                    (ToggleButton)findViewById(R.id.toggleButtonDown),
+                    (ToggleButton)findViewById(R.id.toggleButtonRight));
+            arduinoOutThread.start();
         } else {
             System.out.println("Accessory open failed.");
         }
@@ -187,6 +205,7 @@ public class MainActivity extends AppCompatActivity implements  Runnable {
 
     private void closeAccessory() {
         try {
+            arduinoOutThread.closeThread();
             if (mFileDescriptor != null) {
                 mFileDescriptor.close();
             }
@@ -200,10 +219,10 @@ public class MainActivity extends AppCompatActivity implements  Runnable {
     public void sendCommand(byte packetID, byte commandID, byte targetID, byte value) {
         byte[] buffer = new byte[4];
 
-        buffer[0] = packetID;
-        buffer[1] = commandID;
-        buffer[2] = targetID;
-        buffer[3] = value;
+        buffer[0] = packetID; // should be PACKET_MARKER
+        buffer[1] = commandID; // ROTATION_COMMAND
+        buffer[2] = targetID; // 0 - 17 = id of the servo motor
+        buffer[3] = value; // actual angle in degrees
         if (mOutputStream != null) {
             try {
                 mOutputStream.write(buffer);
@@ -213,13 +232,17 @@ public class MainActivity extends AppCompatActivity implements  Runnable {
         }
     }
 
-    public void toggleButtonLED_Click(View v){
-        System.out.println("Button click!");
+    public void toggleButtonUp_Click(View v){
+        System.out.println("UP click!");
+        ToggleButton toggleButton = (ToggleButton)findViewById(R.id.toggleButtonDown);
+        toggleButton.setChecked(false);
+
+    }
+
+    public void toggleButtonDown_Click(View v){
+        System.out.println("DOWN click!");
         ToggleButton toggleButton = (ToggleButton)findViewById(R.id.toggleButtonUp);
-        if(toggleButton.isChecked())
-            sendCommand(PACKET_MARKER, (byte)34, (byte)0, (byte) 1);
-        else
-            sendCommand(PACKET_MARKER, (byte)34, (byte)0, (byte) 0);
+        toggleButton.setChecked(false);
     }
 
     @Override
